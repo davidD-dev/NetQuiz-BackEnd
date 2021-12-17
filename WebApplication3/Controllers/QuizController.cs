@@ -36,7 +36,7 @@ namespace WebApplication3.Context
             return this._quizService.getAll();
         }
 
-        [HttpGet("/{id}")]
+        [HttpGet("quiz/{id}")]
         public IActionResult GetById(Guid id)
         {
             var quiz = this._quizService.getById(id);
