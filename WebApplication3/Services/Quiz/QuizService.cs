@@ -17,7 +17,7 @@ namespace WebApplication3.Services.Quiz
     public class QuizService : IQuizService
     {
 
-        private IQuizRepository _repository;
+        private readonly IQuizRepository _repository;
         private readonly IMapper _mapper;
 
         public QuizService(IQuizRepository repository, IMapper mapper)
@@ -26,9 +26,14 @@ namespace WebApplication3.Services.Quiz
             this._mapper = mapper;
         }
 
-        public IEnumerable<GetAllQuizDTO> getAll()
+        public List<GetAllQuizDTO> getAll()
         {
             return this._repository.GetAll();
+        }
+
+        public List<GetAllQuizDTO> GetDraftQuizzes()
+        {
+            return this._repository.GetDraftQuizzes();
         }
 
         public GetQuizDTO getById(Guid id)
@@ -88,6 +93,27 @@ namespace WebApplication3.Services.Quiz
                 } else
                 {
                     return -1;
+                }
+            }
+            return 0;
+
+        }
+
+        public int Publish(Guid id)
+        {
+            QuizModel existing = this._repository.GetByIdWithoutTracking(id);
+            if (existing != null)
+            {
+                if (existing.Status != QuizStatus.Draft)
+                {
+                    return 0;
+                }
+                else
+                {
+                    //QuizModel model = this._mapper.Map<QuizModel>(existing);
+                    existing.Status = QuizStatus.Published;
+                    this._repository.Update(existing);
+                    return this.Save();
                 }
             }
             return 0;

@@ -26,7 +26,7 @@ namespace WebApplication3.Repository.Quiz
             AnswerTable = context.Set<AnswerModel>();
         }
 
-        public new IEnumerable<GetAllQuizDTO> GetAll()
+        public new List<GetAllQuizDTO> GetAll()
         {
             var preQuery = QuizTable.AsQueryable();
             return GetAllQuizRequest(preQuery).ToList();
@@ -51,6 +51,12 @@ namespace WebApplication3.Repository.Quiz
             IQueryable<QuizModel> elements = QuizTable.Where(x => x.Id == id).AsNoTracking();
 
             return elements.FirstOrDefault();
+        }
+
+        public List<GetAllQuizDTO> GetDraftQuizzes()
+        {
+            var preQuery = QuizTable.Where(quiz => quiz.Status == QuizStatus.Draft);
+            return GetAllQuizRequest(preQuery).ToList();
         }
 
         private IQueryable<GetQuizDTO> GetQuizRequest(IQueryable<QuizModel> query)
