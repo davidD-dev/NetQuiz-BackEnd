@@ -32,6 +32,11 @@ namespace WebApplication3.Models.Quiz
                 yield return new ValidationResult("Veuillez entrez un mot de passe", new List<string>() { nameof(this.Password) });
             }
 
+            if (this.Questions.Count() != 10)
+            {
+                yield return new ValidationResult("Un quiz doit contenir 10 questions", new List<string>() { nameof(this.Questions) });
+            }
+
         }
     }
 }

@@ -10,6 +10,7 @@ using WebApplication3.Services;
 using WebApplication3.Models.Quiz;
 using BCryptNet = BCrypt.Net.BCrypt;
 using AutoMapper;
+using WebApplication3.Models.Question;
 
 namespace WebApplication3.Services.Quiz
 {
@@ -59,6 +60,8 @@ namespace WebApplication3.Services.Quiz
             string passwordHash = BCryptNet.HashPassword(quiz.Password, BCryptNet.GenerateSalt(12));
             quiz.Password = passwordHash;
             quiz.Status = QuizStatus.Draft;
+
+
             QuizModel model = this._mapper.Map<QuizModel>(quiz);
             model.Rate = 0;
             this._repository.Insert(model);
@@ -94,6 +97,11 @@ namespace WebApplication3.Services.Quiz
         public int Save()
         {
             return this._repository.Save();
+        }
+
+        private void trueFalseQuestion()
+        {
+
         }
     }
 }
