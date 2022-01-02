@@ -17,5 +17,7 @@ namespace WebApplication3.Services.Question
         int Save();
 
         int Update(QuestionModel quiz);
+
+        List<KeyValuePair<string, int>> GetAllTypes();
     }
 }

@@ -27,17 +27,6 @@ namespace WebApplication3.Models.Question
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
 
-            // A question must have 4 answer possible, exepte for the question with the text area and the True or False question
-            if (this.Type != QuestionTypes.TextAnswer && this.Type != QuestionTypes.TrueFalse)
-            {
-                if (this.Answers.Count() != 4)
-                {
-                    Debug.WriteLine(this.Type);
-                    yield return new ValidationResult("Une question doit avoir 4 propositions de réponse", new List<string>() { nameof(this.Answers) });
-
-                }
-            }
-
             // A multiple choices question must have at least one correct answer
             if (this.Type == QuestionTypes.MultipleAnswer)
             {
@@ -48,26 +37,12 @@ namespace WebApplication3.Models.Question
             }
 
             // A classical question must have only one correct answer
-            if (this.Type == QuestionTypes.SingleAnswer)
+            if (this.Type == QuestionTypes.UniqueAnswer)
             {
                 if (this._getNbRightAnswers() != 1)
                 {
                     yield return new ValidationResult("Une question classque ne peut avoir qu'une seule réponse correct", new List<string>() { nameof(this.Answers) });
 
-                }
-            }
-
-            // A True or False quesiton must have 2 possible answer and only one correct
-            if (this.Type == QuestionTypes.TrueFalse)
-            {
-                if (this._getNbRightAnswers() != 1)
-                {
-                    yield return new ValidationResult("Une question Vrai / Faux ne peut avoir qu'une seule réponse correct", new List<string>() { nameof(this.Answers) });
-                }
-
-                if (this.Answers.Count() != 2)
-                {
-                    yield return new ValidationResult("Une question Vrai / Faux ne peut avoir que 2 réponses possible", new List<string>() { nameof(this.Answers) });
                 }
             }
         }

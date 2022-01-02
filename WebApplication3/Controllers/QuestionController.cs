@@ -29,6 +29,13 @@ namespace WebApplication3.Controllers
 
         }
 
+        [HttpGet("questions/types")]
+        public List<KeyValuePair<string, int>> GetAllTypes()
+        {
+            return this._service.GetAllTypes();
+
+        }
+
         [HttpDelete("question/delete/{id}")]
         public IActionResult Delete(Guid id)
         {

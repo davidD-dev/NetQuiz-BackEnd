@@ -23,7 +23,7 @@ namespace WebApplication3.Services.Quiz
 
         int Update(UpdateQuizDTO quiz);
 
-        List<string> GetStatus();
+        List<KeyValuePair<string, int>> GetStatus();
 
     }
 }

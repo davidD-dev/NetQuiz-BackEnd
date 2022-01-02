@@ -44,7 +44,7 @@ namespace WebApplication3.Context
         }
 
         [HttpGet("quiz/status")]
-        public List<string> GetStatus()
+        public List<KeyValuePair<string, int>> GetStatus()
         {
             return this._quizService.GetStatus();
         }

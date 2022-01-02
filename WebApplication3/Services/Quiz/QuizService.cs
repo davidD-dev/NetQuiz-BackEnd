@@ -41,10 +41,10 @@ namespace WebApplication3.Services.Quiz
             return this._repository.getByName(name);
         }
 
-        public List<string> GetStatus()
+        public List<KeyValuePair<string, int>> GetStatus()
         {
             var status =  QuizStatus.GetValues(typeof(QuizStatus)).Cast<QuizStatus>().ToList();
-            List<string> statusDescriptions = status.Select(x => x.GetDescription()).ToList();
+            List<KeyValuePair<string, int>> statusDescriptions = status.Select(x => new KeyValuePair<string, int>(x.GetDescription(), (int)x)).ToList();
             return statusDescriptions;
             
         }
@@ -59,11 +59,11 @@ namespace WebApplication3.Services.Quiz
         {
             string passwordHash = BCryptNet.HashPassword(quiz.Password, BCryptNet.GenerateSalt(12));
             quiz.Password = passwordHash;
-            quiz.Status = QuizStatus.Draft;
 
 
             QuizModel model = this._mapper.Map<QuizModel>(quiz);
             model.Rate = 0;
+            model.Status = QuizStatus.Draft;
             this._repository.Insert(model);
             this.Save();
         }

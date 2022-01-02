@@ -13,7 +13,6 @@ namespace WebApplication3.Models.Quiz
         [Required]
         [StringLength(20, ErrorMessage = "La taille du nom est de 20 maximum")]
         public string Name { get; set; }
-        public QuizStatus Status { get; set; }
         public IList<CreateQuestionDTO> Questions { get; set; }
         public string Password { get; set; }
 
@@ -32,9 +31,9 @@ namespace WebApplication3.Models.Quiz
                 yield return new ValidationResult("Veuillez entrez un mot de passe", new List<string>() { nameof(this.Password) });
             }
 
-            if (this.Questions.Count() != 10)
+            if (this.Questions.Count() != 5)
             {
-                yield return new ValidationResult("Un quiz doit contenir 10 questions", new List<string>() { nameof(this.Questions) });
+                yield return new ValidationResult("Un quiz doit contenir 5 questions", new List<string>() { nameof(this.Questions) });
             }
 
         }

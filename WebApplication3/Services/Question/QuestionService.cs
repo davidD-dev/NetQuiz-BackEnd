@@ -10,15 +10,24 @@ namespace WebApplication3.Services.Question
     public class QuestionService : IQuestionService
     {
         private IQuestionRepository _repository;
+        private QuestionTypes _questionTypes;
 
         public QuestionService(IQuestionRepository repository)
         {
             this._repository = repository;
+            this._questionTypes = new QuestionTypes();
         }
 
         public IEnumerable<GetQuestionDTO> GetByQuiz(Guid idQuiz)
         {
             return this._repository.GetByQuiz(idQuiz);
+        }
+
+        public List<KeyValuePair<string, int>> GetAllTypes()
+        {
+            var types = QuestionTypes.GetValues(typeof(QuestionTypes)).Cast<QuestionTypes>().ToList();
+            List<KeyValuePair<string, int>> questionsTypes = types.Select(x => new KeyValuePair<string, int>(x.GetDescription(), (int)x)).ToList();
+            return questionsTypes;
         }
 
         public void Delete(Guid id)

@@ -1,22 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebApplication3.Models.Question
 {
+/*    public class QuestionTypes
+    {
+        public List<KeyValuePair<string, int>> Types { 
+            get; 
+            private set; 
+        }
+        
+        public QuestionTypes()
+        {
+            Types = new List<KeyValuePair<string, int>>();
+            Types.Add(new KeyValuePair<string, int>("Choix multiple", 0));
+            Types.Add(new KeyValuePair<string, int>("Choix unique", 1));
+            Types.Add(new KeyValuePair<string, int>("Réponse libre", 2));
+        }
+
+
+    }*/
+
+    public static class Extensions
+    {
+        public static string GetDescription(this QuestionTypes status)
+        {
+            DescriptionAttribute[] attributes = (DescriptionAttribute[])status
+            .GetType()
+            .GetField(status.ToString())
+            .GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+            return attributes.Length > 0 ? attributes[0].Description : string.Empty;
+        }
+    }
+
     public enum QuestionTypes
     {
-        // A true or false quesiton
-        TrueFalse,
-
-        // A question with multiple choices and several correct answers 
+        [Description("Choix multiple")]
         MultipleAnswer,
 
-        // A qestion with multiple choice but only one answer correct
-        SingleAnswer,
+        [Description("Choix unique")]
+        UniqueAnswer,
 
-        // A quesiton with a text area for the answer
-        TextAnswer
+        [Description("Réponse libre")]
+        freeAnswer,
     }
+
 }
