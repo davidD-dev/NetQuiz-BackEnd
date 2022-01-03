@@ -25,6 +25,14 @@ namespace WebApplication3.Repository.Question
             AnswerTable = context.Set<AnswerModel>();
         }
 
+        public List<QuestionModel> GetAll()
+        {
+            var preQuery = _context.Question
+                .Include(q => q.Answers);
+
+            return preQuery.ToList();
+        }
+
         public IEnumerable<GetQuestionDTO> GetByQuiz(Guid idQuiz)
         {
             IQueryable<QuestionModel> preQuery = QuestionTable.Where(x => x.QuizId == idQuiz);

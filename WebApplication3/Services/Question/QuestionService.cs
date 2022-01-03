@@ -12,6 +12,11 @@ namespace WebApplication3.Services.Question
         private IQuestionRepository _repository;
         private QuestionTypes _questionTypes;
 
+        public List<QuestionModel> GetAll()
+        {
+            return this._repository.GetAll();
+        }
+        
         public QuestionService(IQuestionRepository repository)
         {
             this._repository = repository;

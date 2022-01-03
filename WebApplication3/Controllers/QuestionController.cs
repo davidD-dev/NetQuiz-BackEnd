@@ -21,6 +21,13 @@ namespace WebApplication3.Controllers
             _service = service;
             _mapper = mapper;
         }
+        
+        [HttpGet("questions")]
+        public IEnumerable<QuestionModel> GetAll()
+        {
+            return this._service.GetAll(); ;
+
+        }
 
         [HttpGet("questions/{quizId}")]
         public IEnumerable<GetQuestionDTO> GetByQuiz(Guid quizId)

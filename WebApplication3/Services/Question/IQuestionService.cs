@@ -10,6 +10,8 @@ namespace WebApplication3.Services.Question
     {
         IEnumerable<GetQuestionDTO> GetByQuiz(Guid idQuiz);
 
+        List<QuestionModel> GetAll();
+
         void Insert(QuestionModel quiz);
 
         void Delete(Guid id);
