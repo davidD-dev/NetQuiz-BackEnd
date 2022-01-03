@@ -95,12 +95,12 @@ namespace WebApplication3.Services.Quiz
 
                     quiz.Password = quizDbPassword.Password;
                     QuizModel model = this._mapper.Map<QuizModel>(quiz);
-                    QuizModel quizdbModel = this._mapper.Map<QuizModel>(quizDbDTO);
+                    //QuizModel quizdbModel = this._mapper.Map<QuizModel>(quizDbDTO);
                     
-                    this._mapper.Map<QuizModel, QuizModel>(model, quizdbModel);
-                    quizdbModel.Id = id;
+                    this._mapper.Map<QuizModel, QuizModel>(model, quizDbDTO);
+                    //quizdbModel.Id = id;
 
-                    this._repository.Update(quizdbModel);
+                    this._repository.Update(quizDbDTO);
                     return this.Save();
                 } else
                 {

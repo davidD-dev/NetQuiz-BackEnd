@@ -7917,26 +7917,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Davide\\.nuget\\packages\\": {}
+    "C:\\Users\\Gérard\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Davide\\Desktop\\projetDotNet\\NetQuiz-BackEnd\\WebApplication3\\WebApplication3.csproj",
+      "projectUniqueName": "D:\\Documments\\CODE DAVID\\dotNetProjet\\NetQuiz-BackEnd\\WebApplication3\\WebApplication3.csproj",
       "projectName": "WebApplication3",
-      "projectPath": "C:\\Users\\Davide\\Desktop\\projetDotNet\\NetQuiz-BackEnd\\WebApplication3\\WebApplication3.csproj",
-      "packagesPath": "C:\\Users\\Davide\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Davide\\Desktop\\projetDotNet\\NetQuiz-BackEnd\\WebApplication3\\obj\\",
+      "projectPath": "D:\\Documments\\CODE DAVID\\dotNetProjet\\NetQuiz-BackEnd\\WebApplication3\\WebApplication3.csproj",
+      "packagesPath": "C:\\Users\\Gérard\\.nuget\\packages\\",
+      "outputPath": "D:\\Documments\\CODE DAVID\\dotNetProjet\\NetQuiz-BackEnd\\WebApplication3\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Davide\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Gérard\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
       ],
-      "sources": {
-        "https://api.nuget.org/v3/index.json": {}
-      },
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
@@ -8006,6 +8004,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[5.0.12, 5.0.12]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -8014,7 +8018,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }
