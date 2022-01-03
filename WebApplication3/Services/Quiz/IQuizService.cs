@@ -9,7 +9,9 @@ namespace WebApplication3.Services.Quiz
 {
     public interface IQuizService
     {
-        IEnumerable<GetAllQuizDTO> getAll();
+        List<GetAllQuizDTO> getAll();
+
+        List<GetAllQuizDTO> GetDraftQuizzes();
 
         QuizModel getByName(string name);
 
@@ -22,6 +24,8 @@ namespace WebApplication3.Services.Quiz
         int Save();
 
         int Update(UpdateQuizDTO quiz);
+
+        int Publish(Guid id);
 
         List<KeyValuePair<string, int>> GetStatus();
 

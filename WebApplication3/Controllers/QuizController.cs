@@ -31,9 +31,15 @@ namespace WebApplication3.Context
         }
 
         [HttpGet("quizzes")]
-        public IEnumerable<GetAllQuizDTO> GetAll()
+        public List<GetAllQuizDTO> GetAll()
         {
             return this._quizService.getAll();
+        }
+
+        [HttpGet("quizzes/draft")]
+        public List<GetAllQuizDTO> GetDraftQuizzes()
+        {
+            return this._quizService.GetDraftQuizzes();
         }
 
         [HttpGet("quiz/{id}")]
@@ -65,6 +71,14 @@ namespace WebApplication3.Context
             
         }
 
+        [HttpPost("quiz/publish")]
+        public IActionResult Publish(Guid id)
+        {
+            int res = this._quizService.Publish(id);
+            return ReturnActionResult(res);
+
+        }
+
         [HttpDelete("quiz/delete/{id}")]
         public IActionResult Delete(Guid id)
         {
@@ -77,19 +91,22 @@ namespace WebApplication3.Context
         {
             int res = this._quizService.Update(quiz);
 
-            switch (res) {
-                case -1:
-                    return Unauthorized();
-                case < 0:
-                    return BadRequest();
-                default:
-                    return Ok();
+            return ReturnActionResult(res);
 
-
-            }
 
         }
 
+        private IActionResult ReturnActionResult(int result)
+        {
+
+            return result switch
+            {
+                -1 => Unauthorized(),
+                0 => BadRequest(),
+                _ => Ok(),
+            };
+        }
 
     }
+
 }
