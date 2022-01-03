@@ -92,10 +92,10 @@ namespace WebApplication3.Context
             return Ok();
         }
 
-        [HttpPut("quiz/update")]
-        public IActionResult Update(UpdateQuizDTO quiz)
+        [HttpPut("quiz/{id}")]
+        public IActionResult Update(Guid id, UpdateQuizDTO quiz)
         {
-            int res = this._quizService.Update(quiz);
+            var res = this._quizService.Update(id, quiz);
 
             return ReturnActionResult(res);
 

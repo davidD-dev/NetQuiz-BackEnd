@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using WebApplication3.Context;
 using WebApplication3.Repository;
 using WebApplication3.Models.Quiz;
@@ -45,6 +46,16 @@ namespace WebApplication3.Repository.Quiz
 
             return GetQuizRequest(preQuery).FirstOrDefault();
         }
+        
+        public new QuizModel GetByIdModel(Guid id)
+        {
+            var preQuery = _context.Quiz
+                .Include(q => q.Questions).ThenInclude(q => q.Answers)
+                .Include(q => q.Scores)
+                .Where(quiz => quiz.Id == id);
+
+            return preQuery.FirstOrDefault();
+        }
 
         public QuizModel GetByIdWithoutTracking(Guid id)
         {
@@ -64,6 +75,7 @@ namespace WebApplication3.Repository.Quiz
             var preQuery = QuizTable.Where(quiz => quiz.Status == QuizStatus.Published);
             return GetAllQuizRequest(preQuery).ToList();
         }
+        
 
         private IQueryable<GetQuizDTO> GetQuizRequest(IQueryable<QuizModel> query)
         {

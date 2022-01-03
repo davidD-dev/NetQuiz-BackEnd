@@ -12,6 +12,8 @@ namespace WebApplication3.Repository.Quiz
     {
         public QuizModel getByName(string name);
 
+        public new QuizModel GetByIdModel(Guid id);
+
         // Key word new offer possibility to mask the GetAll function inherit from ICrudRepository
         public new List<GetAllQuizDTO> GetAll();
 
@@ -25,6 +27,7 @@ namespace WebApplication3.Repository.Quiz
         
         // Return Quizzes published
         public List<GetAllQuizDTO> GetPublishQuizzes();
+        
 
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WebApplication3.Context;
 using WebApplication3.Models.Answer;
@@ -21,7 +22,9 @@ namespace WebApplication3.Models.Question
         [Required]
         public QuestionTypes Type { get; set; }
 
+        [JsonIgnore]
         public Guid QuizId { get; set; }
+        [JsonIgnore]
         public QuizModel Quiz { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

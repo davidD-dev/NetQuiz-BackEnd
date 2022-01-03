@@ -78,22 +78,29 @@ namespace WebApplication3.Services.Quiz
             this.Save();
         }
 
-        public int Update(UpdateQuizDTO quiz)
+        public int Update(Guid id, UpdateQuizDTO quiz)
         {
-            QuizModel existing = this._repository.GetByIdWithoutTracking(quiz.Id);
-            if (existing != null)
+            var quizDbDTO = this._repository.GetByIdModel(id);
+            var quizDbPassword = this._repository.GetByIdWithoutTracking(id);
+            
+            if (quizDbPassword != null)
             {
-                if (existing.Status != QuizStatus.Draft)
+                if (quizDbPassword.Status != QuizStatus.Draft)
                 {
                     return 0;
                 }
-                bool verified = BCryptNet.Verify(quiz.Password, existing.Password);
+                bool verified = BCryptNet.Verify(quiz.Password, quizDbPassword.Password);
                 if (verified)
                 {
 
-                    quiz.Password = existing.Password;
+                    quiz.Password = quizDbPassword.Password;
                     QuizModel model = this._mapper.Map<QuizModel>(quiz);
-                    this._repository.Update(model);
+                    QuizModel quizdbModel = this._mapper.Map<QuizModel>(quizDbDTO);
+                    
+                    this._mapper.Map<QuizModel, QuizModel>(model, quizdbModel);
+                    quizdbModel.Id = id;
+
+                    this._repository.Update(quizdbModel);
                     return this.Save();
                 } else
                 {

@@ -25,7 +25,7 @@ namespace WebApplication3.Services.Quiz
 
         int Save();
 
-        int Update(UpdateQuizDTO quiz);
+        int Update(Guid id, UpdateQuizDTO quiz);
 
         int Publish(Guid id);
 

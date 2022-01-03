@@ -52,6 +52,7 @@ namespace WebApplication3.Repository.Question
                 {
                     Id = answerElement.Id,
                     Text = answerElement.Text,
+                    IsCorrect = answerElement.IsCorrect
                 }
                     ).ToList()
             }).AsNoTracking();

@@ -42,7 +42,7 @@ namespace WebApplication3.Repository
 
         public void Update(T obj)
         {
-            table.Update(obj);
+            _context.Update(obj);
         }
 
         public int Save()
