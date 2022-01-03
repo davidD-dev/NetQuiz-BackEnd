@@ -35,6 +35,11 @@ namespace WebApplication3.Services.Quiz
         {
             return this._repository.GetDraftQuizzes();
         }
+        
+        public List<GetAllQuizDTO> GetPublishQuizzes()
+        {
+            return this._repository.GetPublishQuizzes();
+        }
 
         public GetQuizDTO getById(Guid id)
         {

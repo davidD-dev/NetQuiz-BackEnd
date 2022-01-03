@@ -41,6 +41,12 @@ namespace WebApplication3.Context
         {
             return this._quizService.GetDraftQuizzes();
         }
+        
+        [HttpGet("quizzes/publish")]
+        public List<GetAllQuizDTO> GetPublishQuizzes()
+        {
+            return this._quizService.GetPublishQuizzes();
+        }
 
         [HttpGet("quiz/{id}")]
         public IActionResult GetById(Guid id)

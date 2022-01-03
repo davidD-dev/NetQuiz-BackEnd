@@ -12,6 +12,8 @@ namespace WebApplication3.Services.Quiz
         List<GetAllQuizDTO> getAll();
 
         List<GetAllQuizDTO> GetDraftQuizzes();
+        
+        List<GetAllQuizDTO> GetPublishQuizzes();
 
         QuizModel getByName(string name);
 

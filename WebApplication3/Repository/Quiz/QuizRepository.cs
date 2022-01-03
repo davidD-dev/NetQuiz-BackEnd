@@ -58,6 +58,12 @@ namespace WebApplication3.Repository.Quiz
             var preQuery = QuizTable.Where(quiz => quiz.Status == QuizStatus.Draft);
             return GetAllQuizRequest(preQuery).ToList();
         }
+        
+        public List<GetAllQuizDTO> GetPublishQuizzes()
+        {
+            var preQuery = QuizTable.Where(quiz => quiz.Status == QuizStatus.Published);
+            return GetAllQuizRequest(preQuery).ToList();
+        }
 
         private IQueryable<GetQuizDTO> GetQuizRequest(IQueryable<QuizModel> query)
         {

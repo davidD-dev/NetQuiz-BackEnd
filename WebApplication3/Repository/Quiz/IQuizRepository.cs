@@ -22,6 +22,9 @@ namespace WebApplication3.Repository.Quiz
 
         // Return Quizzes wiches in draft state
         public List<GetAllQuizDTO> GetDraftQuizzes();
+        
+        // Return Quizzes published
+        public List<GetAllQuizDTO> GetPublishQuizzes();
 
     }
 }
