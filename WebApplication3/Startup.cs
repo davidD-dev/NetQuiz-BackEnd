@@ -83,7 +83,11 @@ namespace WebApplication3
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors("GlobalCors");
+            app.UseCors(
+                builder => builder.SetIsOriginAllowed(origin => true)
+                    .AllowAnyMethod()
+                    .WithHeaders("authorization", "accept", "content-type", "origin")
+                );
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
