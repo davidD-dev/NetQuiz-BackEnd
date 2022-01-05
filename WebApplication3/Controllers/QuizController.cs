@@ -78,9 +78,9 @@ namespace WebApplication3.Context
         }
         
         [HttpPost("quiz/{id}/checkAccess")]
-        public IActionResult CheckAccess(Guid id, string password)
+        public IActionResult CheckAccess(Guid id, PasswordDTO values)
         {
-            GetQuizDTO res = this._quizService.CheckAccess(id, password);
+            GetQuizDTO res = this._quizService.CheckAccess(id, values.Password);
             if (res == null)
             {
                 return Unauthorized();
