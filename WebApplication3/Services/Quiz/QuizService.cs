@@ -88,23 +88,17 @@ namespace WebApplication3.Services.Quiz
             {
                 return 0;
             }
-            var verified = BCryptNet.Verify(quiz.Password, quizDbPassword.Password);
-            if (verified)
-            {
 
-                quiz.Password = quizDbPassword.Password;
-                QuizModel model = this._mapper.Map<QuizModel>(quiz);
-                //QuizModel quizdbModel = this._mapper.Map<QuizModel>(quizDbDTO);
-                    
-                this._mapper.Map<QuizModel, QuizModel>(model, quizDbDTO);
-                //quizdbModel.Id = id;
+            quiz.Password = quizDbPassword.Password;
+            QuizModel model = this._mapper.Map<QuizModel>(quiz);
+            //QuizModel quizdbModel = this._mapper.Map<QuizModel>(quizDbDTO);
+                
+            this._mapper.Map<QuizModel, QuizModel>(model, quizDbDTO);
+            //quizdbModel.Id = id;
 
-                this._repository.Update(quizDbDTO);
-                return this.Save();
-            } else
-            {
-                return -1;
-            }
+            this._repository.Update(quizDbDTO);
+            return this.Save();
+
 
         }
 
@@ -128,7 +122,7 @@ namespace WebApplication3.Services.Quiz
 
         public GetQuizDTO CheckAccess(Guid id, string password)
         {
-            var existing = this._repository.GetById(id);
+            var existing = this._repository.GetQuizForUpdate(id);
             if (existing == null) return null;
             var quizPassword = _repository.GetPassword(id);
             var verified = BCryptNet.Verify(password, quizPassword);

@@ -62,7 +62,7 @@ namespace WebApplication3.Context
         }
 
 
-        [HttpPost("quiz/create")]
+        [HttpPost("quiz")]
         public IActionResult Insert(CreateQuizDTO quiz)
         {
             if (ModelState.IsValid)
@@ -92,7 +92,7 @@ namespace WebApplication3.Context
 
         }
 
-        [HttpPost("quiz/publish")]
+        [HttpPost("quiz/{id}/publish")]
         public IActionResult Publish(Guid id)
         {
             int res = this._quizService.Publish(id);
@@ -100,7 +100,7 @@ namespace WebApplication3.Context
 
         }
 
-        [HttpDelete("quiz/delete/{id}")]
+        [HttpDelete("quiz/{id}")]
         public IActionResult Delete(Guid id)
         {
             this._quizService.Delete(id);

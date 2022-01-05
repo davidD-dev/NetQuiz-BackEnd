@@ -12,7 +12,7 @@ namespace WebApplication3.Models.Answer
     {
         public string Text { get; set; }
         
-        public bool IsCorrect { get; set; }
+        public bool? IsCorrect { get; set; }
         
         [JsonIgnore]
         public Guid QuizId { get; set; }

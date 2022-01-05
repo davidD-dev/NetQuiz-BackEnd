@@ -31,6 +31,8 @@ namespace WebApplication3.Repository.Quiz
         // Get the password of a quiz
         public string GetPassword(Guid id);
 
+        public GetQuizDTO GetQuizForUpdate(Guid id);
+
 
     }
 }

@@ -42,9 +42,16 @@ namespace WebApplication3.Repository.Quiz
 
         public new GetQuizDTO GetById(Guid id)
         {
-            var preQuery = QuizTable.Where(quiz => quiz.Id == id).AsNoTracking();
+            var preQuery = QuizTable.Where(quiz => quiz.Id == id)
+                .AsNoTracking();
             
             return GetQuizRequest(preQuery).FirstOrDefault();
+        }
+
+        public new GetQuizDTO GetQuizForUpdate(Guid id)
+        {
+            var preQuery = QuizTable.Where(quiz => quiz.Id == id);
+            return GetRequestQuizForUpdate(preQuery).FirstOrDefault();
         }
         
         public new QuizModel GetByIdModel(Guid id)
@@ -107,6 +114,33 @@ namespace WebApplication3.Repository.Quiz
                 }).ToList()
             }).AsNoTracking();
         }
+        
+        private IQueryable<GetQuizDTO> GetRequestQuizForUpdate(IQueryable<QuizModel> query)
+        {
+            return query.Select(quiz => new GetQuizDTO
+            {
+                Id = quiz.Id,
+                Name = quiz.Name,
+                Status = quiz.Status,
+                Rate = quiz.Rate,
+                Questions = QuestionTable.Where(question => quiz.Id == question.QuizId).Select(questionElement => new GetQuestionDTO
+                {
+                    Id = questionElement.Id,
+                    Text = questionElement.Text,
+                    Type = questionElement.Type,
+                    QuizId = questionElement.QuizId,
+                    Answers = AnswerTable.Where(answer => questionElement.Id == answer.QuestionId).Select(answerElement => new GetAnswerDTO
+                        {
+                            Id = answerElement.Id,
+                            Text = answerElement.Text,
+                            IsCorrect = answerElement.IsCorrect
+                        }
+                    ).ToList()
+                }).ToList()
+            }).AsNoTracking();
+        }
+        
+        
         private IQueryable<GetAllQuizDTO> GetAllQuizRequest(IQueryable<QuizModel> query)
         {
             return query.Select(quiz => new GetAllQuizDTO
