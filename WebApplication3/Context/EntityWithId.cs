@@ -12,7 +12,6 @@ namespace WebApplication3.Context
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [JsonIgnore]
         public Guid Id { get; set; }
     }
 }
