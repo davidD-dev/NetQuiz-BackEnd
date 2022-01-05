@@ -28,6 +28,9 @@ namespace WebApplication3.Repository.Quiz
         // Return Quizzes published
         public List<GetAllQuizDTO> GetPublishQuizzes();
         
+        // Get the password of a quiz
+        public string GetPassword(Guid id);
+
 
     }
 }

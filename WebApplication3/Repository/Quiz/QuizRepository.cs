@@ -43,7 +43,7 @@ namespace WebApplication3.Repository.Quiz
         public new GetQuizDTO GetById(Guid id)
         {
             var preQuery = QuizTable.Where(quiz => quiz.Id == id).AsNoTracking();
-
+            
             return GetQuizRequest(preQuery).FirstOrDefault();
         }
         
@@ -74,6 +74,13 @@ namespace WebApplication3.Repository.Quiz
         {
             var preQuery = QuizTable.Where(quiz => quiz.Status == QuizStatus.Published);
             return GetAllQuizRequest(preQuery).ToList();
+        }
+        
+        public string GetPassword(Guid id)
+        {
+            var preQuery = _context.Quiz.Where(q => q.Id == id)
+                .Select(q => q.Password).FirstOrDefault();
+            return preQuery;
         }
         
 
@@ -110,6 +117,8 @@ namespace WebApplication3.Repository.Quiz
                 Rate = quiz.Rate
             }).AsNoTracking();
         }
+
+
 
     }
 }

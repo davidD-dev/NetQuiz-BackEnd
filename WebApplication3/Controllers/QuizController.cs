@@ -76,6 +76,21 @@ namespace WebApplication3.Context
             }
             
         }
+        
+        [HttpPost("quiz/{id}/checkAccess")]
+        public IActionResult CheckAccess(Guid id, string password)
+        {
+            GetQuizDTO res = this._quizService.CheckAccess(id, password);
+            if (res == null)
+            {
+                return Unauthorized();
+            }
+            else
+            {
+                return Ok(res);
+            }
+
+        }
 
         [HttpPost("quiz/publish")]
         public IActionResult Publish(Guid id)

@@ -31,5 +31,7 @@ namespace WebApplication3.Services.Quiz
 
         List<KeyValuePair<string, int>> GetStatus();
 
+        GetQuizDTO CheckAccess(Guid id, string password);
+
     }
 }

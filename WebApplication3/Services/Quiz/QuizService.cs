@@ -53,8 +53,8 @@ namespace WebApplication3.Services.Quiz
 
         public List<KeyValuePair<string, int>> GetStatus()
         {
-            var status =  QuizStatus.GetValues(typeof(QuizStatus)).Cast<QuizStatus>().ToList();
-            List<KeyValuePair<string, int>> statusDescriptions = status.Select(x => new KeyValuePair<string, int>(x.GetDescription(), (int)x)).ToList();
+            var status =  Enum.GetValues(typeof(QuizStatus)).Cast<QuizStatus>().ToList();
+            var statusDescriptions = status.Select(x => new KeyValuePair<string, int>(x.GetDescription(), (int)x)).ToList();
             return statusDescriptions;
             
         }
@@ -67,7 +67,7 @@ namespace WebApplication3.Services.Quiz
 
         public void Insert(CreateQuizDTO quiz)
         {
-            string passwordHash = BCryptNet.HashPassword(quiz.Password, BCryptNet.GenerateSalt(12));
+            var passwordHash = BCryptNet.HashPassword(quiz.Password, BCryptNet.GenerateSalt(12));
             quiz.Password = passwordHash;
 
 
@@ -82,64 +82,63 @@ namespace WebApplication3.Services.Quiz
         {
             var quizDbDTO = this._repository.GetByIdModel(id);
             var quizDbPassword = this._repository.GetByIdWithoutTracking(id);
-            
-            if (quizDbPassword != null)
+
+            if (quizDbPassword == null) return 0;
+            if (quizDbPassword.Status != QuizStatus.Draft)
             {
-                if (quizDbPassword.Status != QuizStatus.Draft)
-                {
-                    return 0;
-                }
-                bool verified = BCryptNet.Verify(quiz.Password, quizDbPassword.Password);
-                if (verified)
-                {
-
-                    quiz.Password = quizDbPassword.Password;
-                    QuizModel model = this._mapper.Map<QuizModel>(quiz);
-                    //QuizModel quizdbModel = this._mapper.Map<QuizModel>(quizDbDTO);
-                    
-                    this._mapper.Map<QuizModel, QuizModel>(model, quizDbDTO);
-                    //quizdbModel.Id = id;
-
-                    this._repository.Update(quizDbDTO);
-                    return this.Save();
-                } else
-                {
-                    return -1;
-                }
+                return 0;
             }
-            return 0;
+            var verified = BCryptNet.Verify(quiz.Password, quizDbPassword.Password);
+            if (verified)
+            {
+
+                quiz.Password = quizDbPassword.Password;
+                QuizModel model = this._mapper.Map<QuizModel>(quiz);
+                //QuizModel quizdbModel = this._mapper.Map<QuizModel>(quizDbDTO);
+                    
+                this._mapper.Map<QuizModel, QuizModel>(model, quizDbDTO);
+                //quizdbModel.Id = id;
+
+                this._repository.Update(quizDbDTO);
+                return this.Save();
+            } else
+            {
+                return -1;
+            }
 
         }
 
         public int Publish(Guid id)
         {
-            QuizModel existing = this._repository.GetByIdWithoutTracking(id);
-            if (existing != null)
+            var existing = this._repository.GetByIdWithoutTracking(id);
+            if (existing == null) return 0;
+            if (existing.Status != QuizStatus.Draft)
             {
-                if (existing.Status != QuizStatus.Draft)
-                {
-                    return 0;
-                }
-                else
-                {
-                    //QuizModel model = this._mapper.Map<QuizModel>(existing);
-                    existing.Status = QuizStatus.Published;
-                    this._repository.Update(existing);
-                    return this.Save();
-                }
+                return 0;
             }
-            return 0;
+            else
+            {
+                //QuizModel model = this._mapper.Map<QuizModel>(existing);
+                existing.Status = QuizStatus.Published;
+                this._repository.Update(existing);
+                return this.Save();
+            }
 
+        }
+
+        public GetQuizDTO CheckAccess(Guid id, string password)
+        {
+            var existing = this._repository.GetById(id);
+            if (existing == null) return null;
+            var quizPassword = _repository.GetPassword(id);
+            var verified = BCryptNet.Verify(password, quizPassword);
+            return verified ? existing : null;
         }
 
         public int Save()
         {
             return this._repository.Save();
         }
-
-        private void trueFalseQuestion()
-        {
-
-        }
+        
     }
 }
