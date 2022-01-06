@@ -12,13 +12,27 @@ namespace WebApplication3.Repository.Quiz
     {
         public QuizModel getByName(string name);
 
+        public new QuizModel GetByIdModel(Guid id);
+
         // Key word new offer possibility to mask the GetAll function inherit from ICrudRepository
-        public new IEnumerable<GetAllQuizDTO> GetAll();
+        public new List<GetAllQuizDTO> GetAll();
 
         public new GetQuizDTO GetById(Guid id);
 
         // Return the quiz that match id without tracking the model
         public QuizModel GetByIdWithoutTracking(Guid id);
+
+        // Return Quizzes wiches in draft state
+        public List<GetAllQuizDTO> GetDraftQuizzes();
+        
+        // Return Quizzes published
+        public List<GetAllQuizDTO> GetPublishQuizzes();
+        
+        // Get the password of a quiz
+        public string GetPassword(Guid id);
+
+        public GetQuizDTO GetQuizForUpdate(Guid id);
+
 
     }
 }

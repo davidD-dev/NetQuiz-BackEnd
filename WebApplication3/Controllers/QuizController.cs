@@ -31,9 +31,21 @@ namespace WebApplication3.Context
         }
 
         [HttpGet("quizzes")]
-        public IEnumerable<GetAllQuizDTO> GetAll()
+        public List<GetAllQuizDTO> GetAll()
         {
             return this._quizService.getAll();
+        }
+
+        [HttpGet("quizzes/draft")]
+        public List<GetAllQuizDTO> GetDraftQuizzes()
+        {
+            return this._quizService.GetDraftQuizzes();
+        }
+        
+        [HttpGet("quizzes/publish")]
+        public List<GetAllQuizDTO> GetPublishQuizzes()
+        {
+            return this._quizService.GetPublishQuizzes();
         }
 
         [HttpGet("quiz/{id}")]
@@ -42,15 +54,16 @@ namespace WebApplication3.Context
             var quiz = this._quizService.getById(id);
             return Ok(quiz);
         }
+        
 
-        [HttpGet("quiz/status")]
-        public List<KeyValuePair<string, int>> GetStatus()
+        [HttpPost("quiz/{id}/rate")]
+        public IActionResult Rate(Guid id, RateDTO values)
         {
-            return this._quizService.GetStatus();
+            return ReturnActionResult(this._quizService.Rate(id, values.Rate));
         }
 
 
-        [HttpPost("quiz/create")]
+        [HttpPost("quiz")]
         public IActionResult Insert(CreateQuizDTO quiz)
         {
             if (ModelState.IsValid)
@@ -62,34 +75,62 @@ namespace WebApplication3.Context
                 this._logger.LogWarning("Insertion échoué : model non valide");
                 return BadRequest();
             }
-            
+        }
+        
+        
+        
+        [HttpPost("quiz/{id}/checkAccess")]
+        public IActionResult CheckAccess(Guid id, PasswordDTO values)
+        {
+            GetQuizDTO res = this._quizService.CheckAccess(id, values.Password);
+            if (res == null)
+            {
+                return Unauthorized();
+            }
+            else
+            {
+                return Ok(res);
+            }
+
         }
 
-        [HttpDelete("quiz/delete/{id}")]
+        [HttpPost("quiz/{id}/publish")]
+        public IActionResult Publish(Guid id)
+        {
+            int res = this._quizService.Publish(id);
+            return ReturnActionResult(res);
+
+        }
+
+        [HttpDelete("quiz/{id}")]
         public IActionResult Delete(Guid id)
         {
             this._quizService.Delete(id);
             return Ok();
         }
 
-        [HttpPut("quiz/update")]
-        public IActionResult Update(UpdateQuizDTO quiz)
+        [HttpPut("quiz/{id}")]
+        public IActionResult Update(Guid id, UpdateQuizDTO quiz)
         {
-            int res = this._quizService.Update(quiz);
+            var res = this._quizService.Update(id, quiz);
 
-            switch (res) {
-                case -1:
-                    return Unauthorized();
-                case < 0:
-                    return BadRequest();
-                default:
-                    return Ok();
+            return ReturnActionResult(res);
 
-
-            }
 
         }
 
+        private IActionResult ReturnActionResult(int result)
+        {
+
+            return result switch
+            {
+                -1 => Unauthorized(),
+                -2 => NotFound(),
+                0 => BadRequest(),
+                _ => Ok(),
+            };
+        }
 
     }
+
 }

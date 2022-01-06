@@ -25,36 +25,11 @@ namespace WebApplication3.Repository.Question
             AnswerTable = context.Set<AnswerModel>();
         }
 
-        public IEnumerable<GetQuestionDTO> GetByQuiz(Guid idQuiz)
-        {
-            IQueryable<QuestionModel> preQuery = QuestionTable.Where(x => x.QuizId == idQuiz);
 
 
-            return GetQuestionRequest(preQuery).ToList();
-        }
 
-        public QuestionModel GetByIdWithoutTracking(Guid id)
-        {
-            IQueryable<QuestionModel> result = QuestionTable.Where(x => x.Id == id).AsNoTracking();
 
-            return result.FirstOrDefault();
-        }
 
-        private IQueryable<GetQuestionDTO> GetQuestionRequest(IQueryable<QuestionModel> query)
-        {
-            return query.Select(questionElement => new GetQuestionDTO
-            {
-                Id = questionElement.Id,
-                Text = questionElement.Text,
-                Type = questionElement.Type,
-                QuizId = questionElement.QuizId,
-                Answers = AnswerTable.Where(answer => questionElement.Id == answer.QuestionId).Select(answerElement => new GetAnswerDTO
-                {
-                    Id = answerElement.Id,
-                    Text = answerElement.Text,
-                }
-                    ).ToList()
-            }).AsNoTracking();
-        }
+
     }
 }

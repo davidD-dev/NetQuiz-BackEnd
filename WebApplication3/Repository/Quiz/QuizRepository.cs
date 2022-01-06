@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using WebApplication3.Context;
 using WebApplication3.Repository;
 using WebApplication3.Models.Quiz;
@@ -26,7 +27,7 @@ namespace WebApplication3.Repository.Quiz
             AnswerTable = context.Set<AnswerModel>();
         }
 
-        public new IEnumerable<GetAllQuizDTO> GetAll()
+        public new List<GetAllQuizDTO> GetAll()
         {
             var preQuery = QuizTable.AsQueryable();
             return GetAllQuizRequest(preQuery).ToList();
@@ -41,9 +42,26 @@ namespace WebApplication3.Repository.Quiz
 
         public new GetQuizDTO GetById(Guid id)
         {
-            var preQuery = QuizTable.Where(quiz => quiz.Id == id).AsNoTracking();
-
+            var preQuery = QuizTable.Where(quiz => quiz.Id == id)
+                .AsNoTracking();
+            
             return GetQuizRequest(preQuery).FirstOrDefault();
+        }
+
+        public new GetQuizDTO GetQuizForUpdate(Guid id)
+        {
+            var preQuery = QuizTable.Where(quiz => quiz.Id == id);
+            return GetRequestQuizForUpdate(preQuery).FirstOrDefault();
+        }
+        
+        public new QuizModel GetByIdModel(Guid id)
+        {
+            var preQuery = _context.Quiz
+                .Include(q => q.Questions).ThenInclude(q => q.Answers)
+                .Include(q => q.Scores)
+                .Where(quiz => quiz.Id == id);
+
+            return preQuery.FirstOrDefault();
         }
 
         public QuizModel GetByIdWithoutTracking(Guid id)
@@ -53,6 +71,26 @@ namespace WebApplication3.Repository.Quiz
             return elements.FirstOrDefault();
         }
 
+        public List<GetAllQuizDTO> GetDraftQuizzes()
+        {
+            var preQuery = QuizTable.Where(quiz => quiz.Status == QuizStatus.Draft);
+            return GetAllQuizRequest(preQuery).ToList();
+        }
+        
+        public List<GetAllQuizDTO> GetPublishQuizzes()
+        {
+            var preQuery = QuizTable.Where(quiz => quiz.Status == QuizStatus.Published).OrderByDescending(q => q.Rate);
+            return GetAllQuizRequest(preQuery).ToList();
+        }
+        
+        public string GetPassword(Guid id)
+        {
+            var preQuery = _context.Quiz.Where(q => q.Id == id)
+                .Select(q => q.Password).FirstOrDefault();
+            return preQuery;
+        }
+        
+
         private IQueryable<GetQuizDTO> GetQuizRequest(IQueryable<QuizModel> query)
         {
             return query.Select(quiz => new GetQuizDTO
@@ -61,6 +99,7 @@ namespace WebApplication3.Repository.Quiz
                 Name = quiz.Name,
                 Status = quiz.Status,
                 Rate = quiz.Rate,
+                NumberOfVote = quiz.NumberOfVote,
                 Questions = QuestionTable.Where(question => quiz.Id == question.QuizId).Select(questionElement => new GetQuestionDTO
                 {
                     Id = questionElement.Id,
@@ -76,6 +115,33 @@ namespace WebApplication3.Repository.Quiz
                 }).ToList()
             }).AsNoTracking();
         }
+        
+        private IQueryable<GetQuizDTO> GetRequestQuizForUpdate(IQueryable<QuizModel> query)
+        {
+            return query.Select(quiz => new GetQuizDTO
+            {
+                Id = quiz.Id,
+                Name = quiz.Name,
+                Status = quiz.Status,
+                Rate = quiz.Rate,
+                Questions = QuestionTable.Where(question => quiz.Id == question.QuizId).Select(questionElement => new GetQuestionDTO
+                {
+                    Id = questionElement.Id,
+                    Text = questionElement.Text,
+                    Type = questionElement.Type,
+                    QuizId = questionElement.QuizId,
+                    Answers = AnswerTable.Where(answer => questionElement.Id == answer.QuestionId).Select(answerElement => new GetAnswerDTO
+                        {
+                            Id = answerElement.Id,
+                            Text = answerElement.Text,
+                            IsCorrect = answerElement.IsCorrect
+                        }
+                    ).ToList()
+                }).ToList()
+            }).AsNoTracking();
+        }
+        
+        
         private IQueryable<GetAllQuizDTO> GetAllQuizRequest(IQueryable<QuizModel> query)
         {
             return query.Select(quiz => new GetAllQuizDTO
@@ -86,6 +152,8 @@ namespace WebApplication3.Repository.Quiz
                 Rate = quiz.Rate
             }).AsNoTracking();
         }
+
+
 
     }
 }
