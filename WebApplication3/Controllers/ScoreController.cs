@@ -24,7 +24,7 @@ namespace WebApplication3.Controllers
             this._service = service;
         }
 
-        [HttpPost("score/create")]
+        [HttpPost("score")]
         public IActionResult Insert(CreateScoreDTO newScore)
         {
             if (ModelState.IsValid)

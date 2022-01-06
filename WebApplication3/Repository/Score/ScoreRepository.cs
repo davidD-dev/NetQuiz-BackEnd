@@ -29,7 +29,7 @@ namespace WebApplication3.Repository.Score
 
         public List<GetScoreDTO> GetScoreByQuizId(Guid quizId)
         {
-            var preQuery = ScoreTable.Where(score => score.QuizId == quizId);
+            var preQuery = ScoreTable.Where(score => score.QuizId == quizId).OrderByDescending(s => s.Score);
             return GetScoreRequest(preQuery).ToList();
         }
 
