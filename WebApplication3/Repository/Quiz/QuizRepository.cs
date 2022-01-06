@@ -79,7 +79,7 @@ namespace WebApplication3.Repository.Quiz
         
         public List<GetAllQuizDTO> GetPublishQuizzes()
         {
-            var preQuery = QuizTable.Where(quiz => quiz.Status == QuizStatus.Published);
+            var preQuery = QuizTable.Where(quiz => quiz.Status == QuizStatus.Published).OrderByDescending(q => q.Rate);
             return GetAllQuizRequest(preQuery).ToList();
         }
         
@@ -99,6 +99,7 @@ namespace WebApplication3.Repository.Quiz
                 Name = quiz.Name,
                 Status = quiz.Status,
                 Rate = quiz.Rate,
+                NumberOfVote = quiz.NumberOfVote,
                 Questions = QuestionTable.Where(question => quiz.Id == question.QuizId).Select(questionElement => new GetQuestionDTO
                 {
                     Id = questionElement.Id,

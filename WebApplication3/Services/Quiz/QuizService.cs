@@ -41,6 +41,22 @@ namespace WebApplication3.Services.Quiz
             return this._repository.GetPublishQuizzes();
         }
 
+        public int Rate(Guid id, int rate)
+        {
+            var existing = this._repository.GetByIdWithoutTracking(id);
+            if (existing != null)
+            {
+                existing.NumberOfVote = existing.NumberOfVote + 1;
+                existing.Rate = (existing.Rate + rate) / existing.NumberOfVote;
+
+                this._repository.Update(existing);
+                this._repository.Save();
+                return 1;
+            }
+
+            return -2;
+        }
+
         public GetQuizDTO getById(Guid id)
         {
             return this._repository.GetById(id);

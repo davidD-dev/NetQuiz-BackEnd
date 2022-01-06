@@ -26,7 +26,8 @@ namespace WebApplication3.Models.Quiz
         public ICollection<ScoreModel> Scores { get; set; }
 
         public int Rate { get; set; }
-
+        
+        public int NumberOfVote { get; set; }
 
         public string Password { get; set; }
 

@@ -61,6 +61,12 @@ namespace WebApplication3.Context
             return this._quizService.GetStatus();
         }
 
+        [HttpPost("quiz/{id}/rate")]
+        public IActionResult Rate(Guid id, RateDTO values)
+        {
+            return ReturnActionResult(this._quizService.Rate(id, values.Rate));
+        }
+
 
         [HttpPost("quiz")]
         public IActionResult Insert(CreateQuizDTO quiz)
@@ -74,8 +80,9 @@ namespace WebApplication3.Context
                 this._logger.LogWarning("Insertion échoué : model non valide");
                 return BadRequest();
             }
-            
         }
+        
+        
         
         [HttpPost("quiz/{id}/checkAccess")]
         public IActionResult CheckAccess(Guid id, PasswordDTO values)
@@ -123,6 +130,7 @@ namespace WebApplication3.Context
             return result switch
             {
                 -1 => Unauthorized(),
+                -2 => NotFound(),
                 0 => BadRequest(),
                 _ => Ok(),
             };

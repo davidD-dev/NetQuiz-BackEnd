@@ -19,6 +19,8 @@ namespace WebApplication3.Services.Quiz
 
         GetQuizDTO getById(Guid id);
 
+        int Rate(Guid id, int rate);
+
         void Insert(CreateQuizDTO quiz);
 
         void Delete(Guid id);
