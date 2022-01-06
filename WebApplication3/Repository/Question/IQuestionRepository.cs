@@ -8,10 +8,5 @@ namespace WebApplication3.Repository.Question
 {
     public interface IQuestionRepository : ICrudRepository<QuestionModel>
     {
-        public IEnumerable<GetQuestionDTO> GetByQuiz(Guid idQuiz);
-
-        public QuestionModel GetByIdWithoutTracking(Guid id);
-
-        public List<QuestionModel> GetAll();
     }
 }

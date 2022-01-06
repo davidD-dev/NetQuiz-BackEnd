@@ -12,7 +12,6 @@ namespace WebApplication3.Services.Score
         public List<GetScoreDTO> GetScoreByQuiz(Guid quizId);
 
         public GetScoreDTO Insert(CreateScoreDTO score);
-
-        public int Save();
+        
     }
 }

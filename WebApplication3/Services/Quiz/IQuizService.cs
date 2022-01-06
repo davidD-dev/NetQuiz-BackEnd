@@ -24,14 +24,12 @@ namespace WebApplication3.Services.Quiz
         void Insert(CreateQuizDTO quiz);
 
         void Delete(Guid id);
-
-        int Save();
+        
 
         int Update(Guid id, UpdateQuizDTO quiz);
 
         int Publish(Guid id);
-
-        List<KeyValuePair<string, int>> GetStatus();
+        
 
         GetQuizDTO CheckAccess(Guid id, string password);
 

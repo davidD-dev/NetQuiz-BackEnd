@@ -54,12 +54,7 @@ namespace WebApplication3.Context
             var quiz = this._quizService.getById(id);
             return Ok(quiz);
         }
-
-        [HttpGet("quiz/status")]
-        public List<KeyValuePair<string, int>> GetStatus()
-        {
-            return this._quizService.GetStatus();
-        }
+        
 
         [HttpPost("quiz/{id}/rate")]
         public IActionResult Rate(Guid id, RateDTO values)

@@ -67,14 +67,6 @@ namespace WebApplication3.Services.Quiz
             return this._repository.getByName(name);
         }
 
-        public List<KeyValuePair<string, int>> GetStatus()
-        {
-            var status =  Enum.GetValues(typeof(QuizStatus)).Cast<QuizStatus>().ToList();
-            var statusDescriptions = status.Select(x => new KeyValuePair<string, int>(x.GetDescription(), (int)x)).ToList();
-            return statusDescriptions;
-            
-        }
-
         public void Delete(Guid id)
         {
             this._repository.Delete(id);
